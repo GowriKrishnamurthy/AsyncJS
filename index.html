@@ -47,7 +47,7 @@
             }, 1500);
         }
         getRecipe();
-        */
+        
         // Asynchronous JS Sample 3: using Promise 
         // STEP1: CONSTRUCTING ALL THE PROMISES
         // resolve function- if event handling was successful 
@@ -85,7 +85,7 @@
         // STEP2: CONSUMING THE PROMISES USING CHAINS OF THEN
         // then function on the Promise object- to handle the fulfilled Promise
         // argument to then - result of the successful Promise is consumed
-        /*
+        
         getIDs
             .then(IDs => {
                 console.log(IDs);
@@ -101,7 +101,7 @@
             .catch(error => {
                 console.log('Error!!');
             }); 
-        */
+        
         // Asynchronous JS Sample 4 
         // STEP2: CONSUMING PROMISES USING ASYNC/AWAIT instead of chains of Thens
         async function getRecipesAW(){
@@ -115,6 +115,26 @@
         }
         // async method runs in the background and always returns a Promise
         getRecipesAW().then(res=>console.log(res));
+        */
+        // Asynchronous JS Sample 5: Making AJAX calls with Fetch and Promise
+        //woeId- Where On Earth ID.
+        function getWeather(woeid) {
+            fetch(`https://www.metaweather.com/api/location/${woeid}/`)
+            .then(result => {
+                console.log(result);
+                // Process this promise response with JSON so that we can then get the actual result
+                return result.json();
+            })
+            .then(data => {
+                // Display the data we returned from the Promise
+                console.log(data);
+                const today = data.consolidated_weather[0];
+                console.log(`Temperatures today in ${data.title} stay between ${Math.round(today.min_temp)} and ${Math.round(today.max_temp)}. ${today.weather_state_name} expected`);
+            })
+            .catch(error => console.log(error));
+        }
+        //woeid for Melbourne - 1103816
+        getWeather(1103816); 
         
     </script>
 </body>
