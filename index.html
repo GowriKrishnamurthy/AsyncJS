@@ -24,9 +24,12 @@
             first();
             */
 
-        // Asynchronous JS Sample 2: Assume we are fetching recipeId and recipe details based on that iD from database.
+        // Asynchronous JS Sample 2: using callbacks 
+        // Assume we are fetching recipeId and recipe details based on that iD from database.
         // Simulating wait to get DB transactions done using setTimeout() 
         // Callback inside callbacks --> Callback hell.
+
+        /*
         function getRecipe() {
             setTimeout(() => {
                 const recipeID = [523, 883, 432, 974];
@@ -44,6 +47,59 @@
             }, 1500);
         }
         getRecipe();
+        */
+        // Asynchronous JS Sample 3: using Promise 
+        // STEP1: CONSTRUCTING ALL THE PROMISES
+        // resolve function- if event handling was successful 
+        // reject - if any failure
+        const getIDs = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const recipeID = [523, 883, 432, 974];
+                // Handling resolve function as we know the Settimeout wont fail here
+                resolve(recipeID);
+                // reject(recipeID);
+            }, 1500);
+        });
+
+        // Get the reciepe details for a particular ID 
+        // into this getRecipeById() function we pass in recID, so the recipe ID  which then passed into setTimeout()
+        // it becomes ID which is then used inside the call back function.
+        const getRecipeById = recID => {
+            return new Promise((resolve, reject) => {
+                setTimeout(ID => {
+                    const recipe = { title: 'Cheezy Pasta', publisher: 'Gowri' }; 
+                    resolve(`${ID}: ${recipe.title}`);
+                }, 1500, recID);
+            });
+        };
+        
+        const getRecipeByPublisher = publisher => {
+            return new Promise((resolve, reject) => {
+                setTimeout(pub => {
+                    const recipeByPublisher = { title: 'Veg Pizza', publisher: 'Gowri' };
+                    resolve(`${pub}: ${recipeByPublisher.title}`);
+                }, 1500, publisher);
+            });
+        };
+
+        // STEP2: CONSUMING THE PROMISES USING CHAINS OF THEN
+        // then function on the Promise object- to handle the fulfilled Promise
+        // argument to then - result of the successful Promise is consumed
+        getIDs
+            .then(IDs => {
+                console.log(IDs);
+                return getRecipeById(IDs[2]);
+            })
+            .then(recipeById=>{
+                console.log(recipeById);
+                return getRecipeByPublisher(recipeById.publisher);
+            })
+            .then(recipeByPublisher=>{
+                console.log(recipeByPublisher);
+            })
+            .catch(error => {
+                console.log('Error!!');
+            });
     </script>
 </body>
 
