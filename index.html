@@ -85,6 +85,7 @@
         // STEP2: CONSUMING THE PROMISES USING CHAINS OF THEN
         // then function on the Promise object- to handle the fulfilled Promise
         // argument to then - result of the successful Promise is consumed
+        /*
         getIDs
             .then(IDs => {
                 console.log(IDs);
@@ -99,7 +100,22 @@
             })
             .catch(error => {
                 console.log('Error!!');
-            });
+            }); 
+        */
+        // Asynchronous JS Sample 4 
+        // STEP2: CONSUMING PROMISES USING ASYNC/AWAIT instead of chains of Thens
+        async function getRecipesAW(){
+            const IDs = await getIDs;
+            const recipebyId=await getRecipeById(IDs[2]);
+            console.log("Recipes by Id: " + recipebyId);
+
+            const recipeByPublisher= await getRecipeByPublisher('Gowri');
+            console.log("Recipes by Publisher: " +recipeByPublisher);
+            return recipeByPublisher;
+        }
+        // async method runs in the background and always returns a Promise
+        getRecipesAW().then(res=>console.log(res));
+        
     </script>
 </body>
 
